@@ -4,6 +4,10 @@ import asyncHandler from 'express-async-handler';
 
 
 class AppController {
+  static getHome = asyncHandler(async (req, res) => {
+    return res.status(200).send('<h>HNGx stage one task.</h> <br/>Visit this endpoint for more information: <a href = "https://hngxtasks.cyclic.cloud/api/v1?slack_name="Your Slack Name&track="Your Track"></a>');
+  })
+
   static slackAndTrack = asyncHandler(async (req, res, next) => {
     const slackName = req.query.slack_name;
     const track = req.query.track;
