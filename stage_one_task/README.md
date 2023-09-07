@@ -15,12 +15,12 @@ The information required includes:
 - The GitHub URL of the full source code.
 
 ## JSON
-{
-  "slack_name": "example_name",<br>
-  "current_day": "Monday",<br>
-  "utc_time": "2023-08-21T15:04:05Z",<br>
-  "track": "backend",<br>
-  "github_file_url": "https://github.com/username/repo/blob/main/file_name.ext",<br>
-  "github_repo_url": "https://github.com/username/repo",<br>
-  “status_code”: “200”<br>
+{<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;"slack_name": "example_name",<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;"current_day": "Monday",<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;"utc_time": "2023-08-21T15:04:05Z",<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;"track": "backend",<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;"github_file_url": "https://github.com/username/repo/blob/main/file_name.ext",<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;"github_repo_url": "https://github.com/username/repo",<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;“status_code”: “200”<br>
 }
