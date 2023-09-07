@@ -15,7 +15,7 @@ class AppController {
 
     const currentDay = moment().tz('UTC').format('dddd');
 
-    const utcTime = moment().tz('UTC').toISOString();
+    const utcTime = moment().tz('UTC').format('YYYY-MM-DDTHH:mm:ss[Z]');
 
     return res.status(200).json({
       slack_name: slackName,
