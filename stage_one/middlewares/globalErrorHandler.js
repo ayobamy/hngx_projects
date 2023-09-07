@@ -1,5 +1,4 @@
 import ApiError from '../errors/ApiError.js';
-import logger from '../utils/logger.js';
 
 const NODE_ENV = process.env.NODE_ENV;
 
@@ -23,7 +22,7 @@ export const prodErrors = (error, req, res) => {
       });
     }
     // unkownn error
-    logger.error(`${error.message}`);
+    console.error(`${error.message}`);
   } else {
     return res.status(500).json({
       status: 'error',
