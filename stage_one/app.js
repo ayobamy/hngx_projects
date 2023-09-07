@@ -32,12 +32,12 @@ const limiter = rateLimit({
   max: 25,
   message: 'Too many request from this IP address. Please try again later!',
 });
-app.use('/api/v1', limiter);
+app.use('/api', limiter);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/api/v1', router);
+app.use('/api', router);
 
 // handles other requests
 app.use('*', (req, res, next) => {
