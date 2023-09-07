@@ -15,7 +15,7 @@ The information required includes:
 - The GitHub URL of the full source code.
 
 ## JSON
-`{<br>
+{
   "slack_name": "example_name",<br>
   "current_day": "Monday",<br>
   "utc_time": "2023-08-21T15:04:05Z",<br>
@@ -23,4 +23,4 @@ The information required includes:
   "github_file_url": "https://github.com/username/repo/blob/main/file_name.ext",<br>
   "github_repo_url": "https://github.com/username/repo",<br>
   “status_code”: “200”<br>
-}`
+}
