@@ -58,6 +58,51 @@ class UserController {
     })
   })
 
+  static updatePerson = asyncHandler(async (req, res, next) => {
+    let user;
+  
+    if (mongoose.isValidObjectId(req.params.id)) {
+      user = await User.findOne({ _id: req.params.id });
+    } else {
+      user = await User.findOne({ name: req.params.id });
+    }
+  
+    if (!user)
+      return next(new NotFoundError('Person not found'));
+  
+    const { name } = req.body;
+    user.name = name;
+    await user.save();
+  
+    return res.status(200).json({
+      status: 'success',
+      data: { person: user },
+      message: 'Person updated successfully',
+    });
+  });
+  
+  static deletePerson = asyncHandler(async (req, res, next) => {
+    let user;
+  
+    if (mongoose.isValidObjectId(req.params.id)) {
+      user = await User.findOne({ _id: req.params.id });
+    } else {
+      user = await User.findOne({ name: req.params.id });
+    }
+  
+    if (!user) {
+      return next(new NotFoundError('Person not found'));
+    }
+  
+    await User.deleteOne();
+  
+    return res.status(200).json({
+      status: 'success',
+      data: { person: user },
+      message: 'Person deleted successfully',
+    });
+  });
+  
 }
 
 export default UserController;

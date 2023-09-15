@@ -14,8 +14,8 @@ router.get('/:id', UserController.getPerson);
 
 router.post('/', UserController.createPerson);
 
-// router.patch('/:id', UserController.updatePerson);
+router.patch('/:id', UserController.updatePerson);
 
-// router.delete('/:id', UserController.deletePerson);
+router.delete('/:id', UserController.deletePerson);
 
 export default router;
