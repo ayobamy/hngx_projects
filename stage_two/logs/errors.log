@@ -10,3 +10,4 @@
 [ERROR] Error connecting to MongoDB: Invalid scheme, expected connection string to start with "mongodb://" or "mongodb+srv://"
 [ERROR] Error connecting to MongoDB: queryTxt ESERVFAIL task-one.kf6fdtk.mongodb.net
 [ERROR] Error connecting to MongoDB: queryTxt ESERVFAIL task-one.kf6fdtk.mongodb.net
+[ERROR] Error connecting to MongoDB: queryTxt ESERVFAIL task-one.kf6fdtk.mongodb.net

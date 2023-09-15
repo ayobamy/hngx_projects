@@ -5,12 +5,14 @@ import UserController from '../controllers/UserController.js';
 const router = express.Router();
 
 // App route
-router.get('/', AppController.getHome);
+router.get('/home', AppController.getHome);
 
 // User route
-router.post('/', UserController.createPerson);
+router.get('/', UserController.getPersons);
 
-// router.get('/:id', UserController.getPerson);
+router.get('/:id', UserController.getPerson);
+
+router.post('/', UserController.createPerson);
 
 // router.patch('/:id', UserController.updatePerson);
 
