@@ -7,5 +7,5 @@ const PORT = process.env.PORT || 4000;
 dbConnect();
 
 app.listen(PORT, () => {
-  console.log.info(`App running in ${app.get('env')} mode on http://localhost:${PORT}`);
+  console.log(`App running in ${app.get('env')} mode on http://localhost:${PORT}`);
 });
