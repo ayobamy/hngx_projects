@@ -15,8 +15,6 @@ const app = express();
 app.use(cors());
 app.options('*', cors());
 
-app.disable('x-powered-by');
-
 const NODE_ENV = process.env.NODE_ENV;
 
 // sets appropriate headers in the HTTP responses
