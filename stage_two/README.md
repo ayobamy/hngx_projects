@@ -27,7 +27,7 @@ Before you get started, make sure you have the following installed on your syste
 
 ### Port
 - `PORT=your_port_here`
-- 
+
 Replace your_mongodb_uri_here with the URI to your MongoDB instance. You can obtain this URI from your MongoDB hosting service or use a locally hosted MongoDB instance.
 
 ## UML Diagram 
@@ -38,6 +38,7 @@ Replace your_mongodb_uri_here with the URI to your MongoDB instance. You can obt
 Now that you've set up the project and configured the environment variables, you can start the API server:
 
 - `npm run dev`
+
 The API will run on http://localhost:5000 by default. You can change the port by modifying the PORT variable in the .env file.
 
 ## Testing in Postman
