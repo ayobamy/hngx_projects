@@ -25,7 +25,7 @@ class UserController {
   static getPersons = asyncHandler(async (req, res) => {
     const users = await User.find();
 
-    const msg = users.length <= 0 ? 'Persons not found' : 'Persons successfully received';
+    const msg = users.length <= 0 ? 'Persons not found' : 'Persons successfully found';
 
     return res.status(200).json({
       status: 'Success',
