@@ -12,10 +12,10 @@ Before you get started, make sure you have the following installed on your syste
 ## Getting Started
 1. Clone the repository to your local machine:
 
-- `git clone https://github.com/Abuka-Victor/hngx-backend.git`
-- `cd hngx-backend`
+```git clone https://github.com/Abuka-Victor/hngx-backend.git```
+```cd hngx-backend```
 
-2. Install project dependencies:
+1. Install project dependencies:
    
 - `npm install`
   
