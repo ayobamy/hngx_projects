@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import logger from './logger.js';
+// import logger from './logger.js';
 
 const dbConnect = async () => {
   const MONGO_URL = process.env.DB_URL;
@@ -9,9 +9,9 @@ const dbConnect = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    logger.info(`Connected to MongoDB succesfully!`);
+    console.log(`Connected to MongoDB succesfully!`);
   } catch (error) {
-    logger.error(`Error connecting to MongoDB: ${error.message}`);
+    console.error(`Error connecting to MongoDB: ${error.message}`);
   }
 };
 

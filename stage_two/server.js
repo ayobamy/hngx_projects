@@ -1,5 +1,5 @@
 import app from './app.js';
-import logger from './utils/logger.js';
+// import logger from './utils/logger.js';
 import dbConnect from './utils/db.js';
 
 const PORT = process.env.PORT || 4000;
@@ -7,5 +7,5 @@ const PORT = process.env.PORT || 4000;
 dbConnect();
 
 app.listen(PORT, () => {
-  logger.info(`App running in ${app.get('env')} mode on http://localhost:${PORT}`);
+  console.log.info(`App running in ${app.get('env')} mode on http://localhost:${PORT}`);
 });
