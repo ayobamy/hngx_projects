@@ -15,8 +15,7 @@ const storage = multer.diskStorage({
     cb(null, uploadDir);
   },
   filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, uniqueSuffix + path.extname(file.originalname));
+    cb(null, file.originalname);
   }
 });
 
@@ -45,31 +44,26 @@ class AppController {
       const stream = fs.createReadStream(filePath);
       stream.pipe(res);
     } catch (error) {
-      console.error(error.message);
+      return res.status(404).json({
+        status: 'fail',
+        message: 'Video not found.'
+      });
     }
-
-    return res.status(200).json({
-      status: 'success',
-    });
   });
 
   static getAllVideos = asyncHandler(async (req, res, next) => {
-    try {
-      const videoFiles = await fs.readdir('uploads/');
-      if (videoFiles.length === 0) {
-        return res.status(200).json({
-          status: 'success',
-          message: 'No videos found.'
-        });
-      }
-
-      res.status(200).json({
+    const videoFiles = await fs.readdir('uploads/');
+    if (videoFiles.length === 0) {
+      return res.status(200).json({
         status: 'success',
-        videos: videoFiles
+        message: 'No videos found.'
       });
-    } catch (error) {
-      return next(new ServerError('Failed to retrieve videos.'));
     }
+
+    res.status(200).json({
+      status: 'success',
+      videos: videoFiles
+    });
   });
 }
 
