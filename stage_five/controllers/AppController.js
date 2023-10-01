@@ -1,53 +1,73 @@
-import asyncHandler from 'express-async-handler';
-import multer from 'multer';
-import path from 'path';
+import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
+import { Readable } from 'stream';
 import fs from 'fs/promises';
+import asyncHandler from 'express-async-handler';
 import NotFoundError from '../errors/notFoundError.js';
-import ServerError from '../errors/serverError.js';
+
+const s3Client = new S3Client({
+  region: process.env.AWS_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  },
+});
 
 const uploadDir = 'uploads';
 fs.mkdir(uploadDir, { recursive: true }).catch(err => {
   console.error('Error creating uploads directory:', err);
 });
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadDir);
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  }
-});
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, uploadDir);
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, file.originalname);
+//   }
+// });
 
-const upload = multer({ storage: storage });
+// const upload = multer({ storage: storage });
 
 class AppController {
-  static videoUpload = upload.single('video');
-
   static handleVideoUpload = asyncHandler(async (req, res, next) => {
     const { file } = req;
     if (!file)
       return next(new NotFoundError('No video file uploaded.'));
 
-    return res.status(200).json({
-      status: 'success',
-      message: 'Video uploaded successfully!'
-    });
+    try {
+      const uploadParams = {
+        Bucket: 'cyclic-muddy-sheath-dress-fawn-ap-northeast-2',
+        Key: `uploads/${file.originalname}`,
+        Body: Readable.from(file.buffer),
+      };
+
+      await s3Client.send(new PutObjectCommand(uploadParams));
+
+      return res.status(200).json({
+        status: 'success',
+        message: 'Video uploaded successfully!'
+      });
+    } catch (error) {
+      return next(new ServerError('Failed to upload video.'));
+    }
   });
 
   static getVideo = asyncHandler(async (req, res, next) => {
     const { filename } = req.params;
-    const filePath = path.join('uploads', filename);
+    const key = `uploads/${filename}`;
 
     try {
-      await fs.access(filePath);
-      const stream = fs.createReadStream(filePath);
-      stream.pipe(res);
+      const getObjectParams = {
+        Bucket: 'cyclic-muddy-sheath-dress-fawn-ap-northeast-2',
+        Key: key,
+      };
+
+      const response = await s3Client.send(new GetObjectCommand(getObjectParams));
+
+      res.setHeader('Content-Type', response.ContentType);
+      response.Body.pipe(res);
     } catch (error) {
-      return res.status(404).json({
-        status: 'fail',
-        message: 'Video not found.'
-      });
+      return next(new NotFoundError('Video not found.'));
     }
   });
 
