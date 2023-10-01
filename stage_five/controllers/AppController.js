@@ -3,6 +3,7 @@ import { Readable } from 'stream';
 import fs from 'fs/promises';
 import asyncHandler from 'express-async-handler';
 import NotFoundError from '../errors/notFoundError.js';
+import ServerError from '../errors/serverError.js';
 
 const s3Client = new S3Client({
   region: process.env.AWS_REGION,
@@ -17,20 +18,10 @@ fs.mkdir(uploadDir, { recursive: true }).catch(err => {
   console.error('Error creating uploads directory:', err);
 });
 
-// const storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, uploadDir);
-//   },
-//   filename: function (req, file, cb) {
-//     cb(null, file.originalname);
-//   }
-// });
-
-// const upload = multer({ storage: storage });
-
 class AppController {
   static handleVideoUpload = asyncHandler(async (req, res, next) => {
     const { file } = req;
+
     if (!file)
       return next(new NotFoundError('No video file uploaded.'));
 
