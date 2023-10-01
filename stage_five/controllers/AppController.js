@@ -1,59 +1,75 @@
 import asyncHandler from 'express-async-handler';
-import fs from 'fs/promises';
+import multer from 'multer';
 import path from 'path';
+import fs from 'fs/promises';
 import NotFoundError from '../errors/notFoundError.js';
 import ServerError from '../errors/serverError.js';
 
+const uploadDir = 'uploads';
+fs.mkdir(uploadDir, { recursive: true }).catch(err => {
+  console.error('Error creating uploads directory:', err);
+});
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, uploadDir);
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, uniqueSuffix + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({ storage: storage });
+
 class AppController {
-  static videoUpload = asyncHandler(async (req, res, next) => {
+  static videoUpload = upload.single('video');
+
+  static handleVideoUpload = asyncHandler(async (req, res, next) => {
     const { file } = req;
     if (!file)
       return next(new NotFoundError('No video file uploaded.'));
 
-    const directory = 'uploads';
-    const filePath = path.join(directory, file.originalname);
-
-    await fs.mkdir(directory, { recursive: true });
-
-    await fs.writeFile(filePath, file.buffer);
-    await fs.access(filePath);
-
     return res.status(200).json({
       status: 'success',
-      message: 'Video uploaded successfully!' 
+      message: 'Video uploaded successfully!'
     });
   });
 
   static getVideo = asyncHandler(async (req, res, next) => {
     const { filename } = req.params;
-    const filePath = `uploads/${filename}`;
+    const filePath = path.join('uploads', filename);
 
     try {
       await fs.access(filePath);
       const stream = fs.createReadStream(filePath);
       stream.pipe(res);
     } catch (error) {
-      return res.status(404).json({
-        status: 'success',
-        message: 'Video not found.'
-      });
+      console.error(error.message);
     }
+
+    return res.status(200).json({
+      status: 'success',
+    });
   });
 
   static getAllVideos = asyncHandler(async (req, res, next) => {
-    const videoFiles = await fs.readdir('uploads/');
+    try {
+      const videoFiles = await fs.readdir('uploads/');
+      if (videoFiles.length === 0) {
+        return res.status(200).json({
+          status: 'success',
+          message: 'No videos found.'
+        });
+      }
 
-    if (videoFiles.length === 0) {
-      return res.status(200).json({
+      res.status(200).json({
         status: 'success',
-        message: 'No videos found.'
+        videos: videoFiles
       });
+    } catch (error) {
+      return next(new ServerError('Failed to retrieve videos.'));
     }
-    
-    res.status(200).json({
-      status: 'success',
-      videos: videoFiles
-    });
   });
 }
 

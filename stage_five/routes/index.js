@@ -4,10 +4,7 @@ import AppController from "../controllers/AppController.js";
 
 const router = express.Router();
 
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
-
-router.post('/upload', upload.single('video'), AppController.videoUpload);
+router.post('/upload', AppController.videoUpload, AppController.handleVideoUpload);
 
 router.get('/videos/:filename', AppController.getVideo);
 
