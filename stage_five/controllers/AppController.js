@@ -13,19 +13,15 @@ class AppController {
     const directory = 'uploads';
     const filePath = path.join(directory, file.originalname);
 
-    try {
-      await fs.mkdir(directory, { recursive: true });
+    await fs.mkdir(directory, { recursive: true });
 
-      await fs.writeFile(filePath, file.buffer);
-      await fs.access(filePath);
+    await fs.writeFile(filePath, file.buffer);
+    await fs.access(filePath);
 
-      return res.status(200).json({
-        status: 'success',
-        message: 'Video uploaded successfully!' 
-      });
-    } catch (error) {
-      return next(new ServerError('Failed to save the uploaded video.'));
-    }
+    return res.status(200).json({
+      status: 'success',
+      message: 'Video uploaded successfully!' 
+    });
   });
 
   static getVideo = asyncHandler(async (req, res, next) => {
