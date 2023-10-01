@@ -46,6 +46,14 @@ class AppController {
 
   static getAllVideos = asyncHandler(async (req, res, next) => {
     const videoFiles = await fs.readdir('uploads/');
+
+    if (videoFiles.length === 0) {
+      return res.status(200).json({
+        status: 'success',
+        message: 'No videos found.'
+      });
+    }
+    
     res.status(200).json({
       status: 'success',
       videos: videoFiles
